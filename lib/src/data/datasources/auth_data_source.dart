@@ -50,7 +50,7 @@ class AuthDataSourceImpl extends AuthDataSource {
     final url = Uri(
       scheme: Const.scheme,
       host: Const.host,
-      path: '/v1/signin',
+      path: '/api/v1/signin',
     );
 
     final response = await http.post(url, headers: headers, body: body);
@@ -81,7 +81,7 @@ class AuthDataSourceImpl extends AuthDataSource {
     final url = Uri(
       scheme: Const.scheme,
       host: Const.host,
-      path: '/v1/signout',
+      path: '/api/v1/signout',
     );
 
     final response = await http.post(url, headers: header);

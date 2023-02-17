@@ -32,7 +32,7 @@ class UserArticleDataSourceImpl extends UserArticleDataSource {
     final url = Uri(
       scheme: Const.scheme,
       host: Const.host,
-      path: '/v1/user/articles/banned',
+      path: '/api/v1/user/articles/banned',
     );
 
     final response = await client.get(url, headers: header);
@@ -57,7 +57,7 @@ class UserArticleDataSourceImpl extends UserArticleDataSource {
     final url = Uri(
       scheme: Const.scheme,
       host: Const.host,
-      path: '/v1/user/articles/drafted',
+      path: '/api/v1/user/articles/drafted',
     );
 
     final response = await client.get(url, headers: header);
@@ -82,7 +82,7 @@ class UserArticleDataSourceImpl extends UserArticleDataSource {
     final url = Uri(
       scheme: Const.scheme,
       host: Const.host,
-      path: '/v1/user/articles/moderated',
+      path: '/api/v1/user/articles/moderated',
     );
 
     final response = await client.get(url, headers: header);
@@ -108,7 +108,7 @@ class UserArticleDataSourceImpl extends UserArticleDataSource {
     final url = Uri(
       scheme: Const.scheme,
       host: Const.host,
-      path: '/v1/user/articles/published',
+      path: '/api/v1/user/articles/published',
     );
 
     final response = await client.get(url, headers: header);
@@ -133,7 +133,7 @@ class UserArticleDataSourceImpl extends UserArticleDataSource {
     final url = Uri(
       scheme: Const.scheme,
       host: Const.host,
-      path: '/v1/user/articles/rejected',
+      path: '/api/v1/user/articles/rejected',
     );
 
     final response = await client.get(url, headers: header);
@@ -158,7 +158,7 @@ class UserArticleDataSourceImpl extends UserArticleDataSource {
     final url = Uri(
       scheme: Const.scheme,
       host: Const.host,
-      path: '/v1/article/$id',
+      path: '/api/v1/article/$id',
       queryParameters: {'status': 'moderated'},
     );
 

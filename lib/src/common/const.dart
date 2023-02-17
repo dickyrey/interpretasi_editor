@@ -9,7 +9,7 @@ class Const {
   static const double mobileWidth = 600;
 
   static const String token = 'access_token';
-  static const String host = 'api.interpretasi.id';
+  static const String host = 'interpretasi.id';
   static const String scheme = 'https';
   static const String photo =
       'https://i.pinimg.com/564x/57/70/f0/5770f01a32c3c53e90ecda61483ccb08.jpg';

@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                       child: ListView.builder(
                         itemCount: 3,
                         scrollDirection: Axis.horizontal,
-                        physics: const BouncingScrollPhysics(),
+                        // physics: const BouncingScrollPhysics(),
                         padding: const EdgeInsets.only(left: Const.margin),
                         itemBuilder: (context, index) {
                           return const ArticleCardLoadingWidget(
@@ -110,9 +110,10 @@ class _HomePageState extends State<HomePage> {
                             child: ListView.builder(
                               itemCount: state.articleList.length,
                               scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              padding:
-                                  const EdgeInsets.only(left: Const.margin),
+                              // physics: const BouncingScrollPhysics(),
+                              padding: const EdgeInsets.only(
+                                left: Const.margin,
+                              ),
                               itemBuilder: (context, index) {
                                 final article = state.articleList[index];
 

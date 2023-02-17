@@ -16,6 +16,7 @@ import 'package:interpretasi_editor/src/presentation/bloc/theme_watcher/theme_wa
 import 'package:interpretasi_editor/src/presentation/bloc/user_article_drafted_watcher/user_article_drafted_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/user_article_moderated_watcher/user_article_moderated_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/utilities/route_generator.dart';
+import 'package:interpretasi_editor/src/utilities/scroll_behavior.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 theme: themeLight(context),
                 darkTheme: themeDark(context),
+                scrollBehavior: ScrollBehaviorWidget(),
                 themeMode: (theme.isDarkMode == true)
                     ? ThemeMode.dark
                     : ThemeMode.light,

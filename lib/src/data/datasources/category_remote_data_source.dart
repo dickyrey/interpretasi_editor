@@ -27,7 +27,7 @@ class CategoryDataSourceImpl extends CategoryDataSource {
     final url = Uri(
       scheme: Const.scheme,
       host: Const.host,
-      path: '/v1/article/',
+      path: '/api/v1/article/',
       queryParameters: {'type': 'categories'},
     );
 
