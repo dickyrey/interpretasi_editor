@@ -25,6 +25,10 @@ class ImageCropperUtils {
           context: context,
           enableZoom: true,
           showZoomer: true,
+          boundary: const CroppieBoundary(
+            width: 400,
+            height: 225,
+          ),
           viewPort: const CroppieViewPort(
             width: 444,
             height: 250,
