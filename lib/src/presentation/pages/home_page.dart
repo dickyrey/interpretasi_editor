@@ -122,10 +122,13 @@ class _HomePageState extends State<HomePage> {
                   },
                   loaded: (state) {
                     return (state.articleList.isEmpty)
-                        ? const Text('buat artikel')
+                        ? Text(
+                            'KLIK TANDA + PADA ATAS KANAN UNTUK MEMBUAT ARTIKEL',
+                            style: theme.textTheme.headlineLarge,
+                          )
                         : SizedBox(
                             width: double.infinity,
-                            height: 300,
+                            height: 280,
                             child: ListView.builder(
                               itemCount: state.articleList.length,
                               scrollDirection: Axis.horizontal,

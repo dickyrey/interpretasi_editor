@@ -18,7 +18,6 @@ import 'package:interpretasi_editor/src/presentation/widget/responsive_layout.da
 import 'package:interpretasi_editor/src/presentation/widget/text_field_widget.dart';
 import 'package:interpretasi_editor/src/presentation/widget/text_form_field_widget.dart';
 import 'package:interpretasi_editor/src/utilities/snackbar.dart';
-import 'package:interpretasi_editor/src/utilities/toast.dart';
 import 'package:tuple/tuple.dart';
 
 class ArticleFormPage extends StatefulWidget {
@@ -235,10 +234,12 @@ class _ArticleFormPageState extends State<ArticleFormPage> {
                       ScaffoldMessenger.of(context).showSnackBar(snack);
                     } else {
                       if (_selectedIndex == 0) {
-                        _pageCtrl.nextPage(
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeIn,
-                        );
+                        if (_formKey.currentState!.validate()) {
+                          _pageCtrl.nextPage(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeIn,
+                          );
+                        }
                       } else {
                         final delta = _quillCtrl.document.toDelta();
                         context
@@ -286,10 +287,12 @@ class _ArticleFormPageState extends State<ArticleFormPage> {
                       ScaffoldMessenger.of(context).showSnackBar(snack);
                     } else {
                       if (_selectedIndex == 0) {
-                        _pageCtrl.nextPage(
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeIn,
-                        );
+                        if (_formKey.currentState!.validate()) {
+                          _pageCtrl.nextPage(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeIn,
+                          );
+                        }
                       } else {
                         final delta = _quillCtrl.document.toDelta();
                         context
@@ -520,7 +523,10 @@ class _ArticleInformationWidget extends StatelessWidget {
                       TextFormFieldWidget(
                         controller: titleCtrl,
                         maxLines: null,
+                        minLength: 65,
                         hintText: lang.ten_ways_to_explore_this_world,
+                        errorText: lang
+                            .the_minimum_length_of_the_title_is_65_characters,
                         onChanged: (v) {
                           context
                               .read<ArticleFormBloc>()

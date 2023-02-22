@@ -13,19 +13,19 @@ class TextFormFieldWidget extends StatelessWidget {
     this.hintText,
     this.helperText,
     this.onChanged,
-    this.maxLength,
     this.prefixIcon,
     this.suffixIcon,
     this.obscureText = false,
-    this.maxLines = 1,
     this.helperMaxLines,
     this.textAlign = TextAlign.left,
     this.inputFormatters,
     this.enabled = true,
     this.textInputAction,
     this.textInputType,
-    this.minLength = 1,
     this.errorText,
+    this.maxLines = 1,
+    this.minLength = 1,
+    this.maxLength,
   });
 
   final TextEditingController? controller;
@@ -36,16 +36,16 @@ class TextFormFieldWidget extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool? obscureText;
-  final int? maxLines;
   final int? helperMaxLines;
-  final int? maxLength;
   final TextAlign? textAlign;
   final List<TextInputFormatter>? inputFormatters;
   final bool enabled;
   final ValueChanged<String>? onChanged;
   final TextInputAction? textInputAction;
   final TextInputType? textInputType;
+  final int? maxLines;
   final int minLength;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -83,8 +83,8 @@ class TextFormFieldWidget extends StatelessWidget {
               errorText: errorText ?? lang.cannot_be_empty,
             ),
             MinLengthValidator(
-              2,
-              errorText: lang.text_too_short,
+              minLength,
+              errorText: errorText ?? lang.text_too_short,
             )
           ]);
         case TextFieldType.phone:

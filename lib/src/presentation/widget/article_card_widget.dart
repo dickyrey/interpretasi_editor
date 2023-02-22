@@ -173,31 +173,14 @@ class _HorizontalCard extends StatelessWidget {
                 vertical: Const.space8,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // // Row(
-                  // //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  // //   children: [
-                  // //     SvgPicture.asset(
-                  // //       Assets.fire,
-                  // //       width: 10,
-                  // //     ),
-                  // //     const SizedBox(width: Const.space8),
-                  // //     Text(
-                  // //       '${lang.trending_no}${index + 1}',
-                  // //       style: theme.textTheme.bodySmall,
-                  // //     ),
-                  // //     const Spacer(),
-                  // //     Text(
-                  // //       timeago.format(article.createdAt),
-                  // //       style: theme.textTheme.bodySmall,
-                  // //     ),
-                  // //   ],
-                  // // ),
-                  // const SizedBox(height: Const.space12),
                   Text(
                     article.title,
                     style: theme.textTheme.titleLarge,
                     maxLines: 3,
+                    textAlign: TextAlign.start,
                   ),
                   const SizedBox(height: Const.space12),
                   Row(
