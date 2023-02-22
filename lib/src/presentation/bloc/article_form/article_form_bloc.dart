@@ -92,6 +92,7 @@ class ArticleFormBloc extends Bloc<ArticleFormEvent, ArticleFormState> {
             final croppedImage = await ImageCropperUtils.cropImage(
               event.context,
               filePath: pickedImage.path,
+              type: event.deviceType,
             );
             if (croppedImage != null) {
               final byte = await croppedImage.readAsBytes();
@@ -146,106 +147,46 @@ class ArticleFormBloc extends Bloc<ArticleFormEvent, ArticleFormState> {
           );
         },
         create: (event) async {
-          if (state.imageFile == null) {
-            emit(
-              state.copyWith(
-                state: RequestState.error,
-                isSubmit: false,
-                message: ExceptionMessage.thumbnailNull,
-              ),
-            );
-          } else if (state.title == '') {
-            emit(
-              state.copyWith(
-                state: RequestState.error,
-                isSubmit: false,
-                message: ExceptionMessage.titleNull,
-              ),
-            );
-          } else if (state.selectedCategory?.id == null) {
-            emit(
-              state.copyWith(
-                state: RequestState.error,
-                isSubmit: false,
-                message: ExceptionMessage.categoryNull,
-              ),
-            );
-          } else if (state.tagList.isEmpty) {
-            emit(
-              state.copyWith(
-                state: RequestState.error,
-                isSubmit: false,
-                message: ExceptionMessage.tagNull,
-              ),
-            );
-          } else {
-            emit(
-              state.copyWith(
-                state: RequestState.loading,
-                isSubmit: true,
-              ),
-            );
+          emit(
+            state.copyWith(
+              state: RequestState.loading,
+              isSubmit: true,
+            ),
+          );
 
-            final decoded =
-                List<Map<String, dynamic>>.from(event.delta.toJson());
-            final html = QuillDeltaToHtmlConverter(decoded);
+          final decoded = List<Map<String, dynamic>>.from(event.delta.toJson());
+          final html = QuillDeltaToHtmlConverter(decoded);
 
-            if (state.imageFile != null &&
-                state.title != '' &&
-                state.selectedCategory?.id != null &&
-                state.tagList.isNotEmpty) {
-              final result = await create.execute(
-                categoryId: state.selectedCategory!.id,
-                image: state.imageFile!,
-                title: state.title,
-                content: html.convert(),
-                deltaJson: jsonEncode(event.delta.toJson()),
-                tags: state.tagList,
-              );
-              result.fold(
-                (f) => emit(
-                  state.copyWith(
-                    state: RequestState.error,
-                    isSubmit: false,
-                    message: f.message,
-                  ),
+          if (state.imageFile != null &&
+              state.title != '' &&
+              state.selectedCategory?.id != null &&
+              state.tagList.isNotEmpty) {
+            final result = await create.execute(
+              categoryId: state.selectedCategory!.id,
+              image: state.imageFile!,
+              title: state.title,
+              content: html.convert(),
+              deltaJson: jsonEncode(event.delta.toJson()),
+              tags: state.tagList,
+            );
+            result.fold(
+              (f) => emit(
+                state.copyWith(
+                  state: RequestState.error,
+                  isSubmit: false,
+                  message: f.message,
                 ),
-                (_) => emit(
-                  state.copyWith(
-                    state: RequestState.loaded,
-                    isSubmit: false,
-                  ),
+              ),
+              (_) => emit(
+                state.copyWith(
+                  state: RequestState.loaded,
+                  isSubmit: false,
                 ),
-              );
-            }
+              ),
+            );
           }
         },
         update: (event) async {
-          if (state.title == '') {
-            emit(
-              state.copyWith(
-                state: RequestState.error,
-                isSubmit: false,
-                message: ExceptionMessage.titleNull,
-              ),
-            );
-          } else if (state.selectedCategory?.id == null) {
-            emit(
-              state.copyWith(
-                state: RequestState.error,
-                isSubmit: false,
-                message: ExceptionMessage.categoryNull,
-              ),
-            );
-          } else if (state.tagList.isEmpty) {
-            emit(
-              state.copyWith(
-                state: RequestState.error,
-                isSubmit: false,
-                message: ExceptionMessage.tagNull,
-              ),
-            );
-          }
           emit(
             state.copyWith(
               state: RequestState.loading,

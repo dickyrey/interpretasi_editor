@@ -33,6 +33,7 @@ class _SplashPageState extends State<SplashPage> {
           state.maybeMap(
             orElse: () {},
             authenticated: (_) {
+              print('AUTH COK');
               return goNextRoute(HOME);
             },
             authInFailure: (_) {

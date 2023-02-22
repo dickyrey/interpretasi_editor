@@ -24,9 +24,27 @@ class AuthDataSourceImpl extends AuthDataSource {
   Future<bool> checkAuth() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(Const.token);
-    
-    if (token != null) {
-      return true;
+
+    final header = {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/json',
+    };
+    final url = Uri(
+      scheme: Const.scheme,
+      host: Const.host,
+      path: 'api/v1/user/check',
+    );
+
+    final response = await client.get(url, headers: header);
+    if (response.statusCode == 200) {
+      if (token != null) {
+        return true;
+      } else {
+        throw ServerException(ExceptionMessage.internetNotConnected);
+      }
+    } else if (response.statusCode == 401) {
+      await prefs.remove(Const.token);
+      throw ServerException(ExceptionMessage.unauthenticated);
     } else {
       throw ServerException(ExceptionMessage.internetNotConnected);
     }
@@ -54,7 +72,7 @@ class AuthDataSourceImpl extends AuthDataSource {
     );
 
     final response = await http.post(url, headers: headers, body: body);
-    
+
     if (response.statusCode == 200) {
       final accessToken = TokenModel.fromJson(
         json.decode(response.body) as Map<String, dynamic>,

@@ -15,6 +15,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
   equatable: ^2.0.5
+  file_picker: ^5.2.5
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
@@ -33,6 +34,7 @@ dependencies:
   image_cropper: ^3.0.1
   image_picker: ^0.8.6+1
   intl: ^0.17.0
+  path_provider: ^2.0.12
   shared_preferences: ^2.0.17
   shimmer: ^2.0.0
   timeago: ^3.3.0

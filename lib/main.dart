@@ -13,6 +13,7 @@ import 'package:interpretasi_editor/src/presentation/bloc/delete_article_actor/d
 import 'package:interpretasi_editor/src/presentation/bloc/localization_watcher/localization_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/sign_in_with_email_form/sign_in_with_email_form_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/theme_watcher/theme_watcher_bloc.dart';
+import 'package:interpretasi_editor/src/presentation/bloc/upload_image_actor/upload_image_actor_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/user_article_drafted_watcher/user_article_drafted_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/user_article_moderated_watcher/user_article_moderated_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/utilities/route_generator.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => di.locator<LocalizationWatcherBloc>()),
         BlocProvider(create: (context) => di.locator<SignInWithEmailFormBloc>()),
         BlocProvider(create: (context) => di.locator<ThemeWatcherBloc>()),
+        BlocProvider(create: (context) => di.locator<UploadImageActorBloc>()),
         BlocProvider(create: (context) => di.locator<UserArticleDraftedWatcherBloc>()),
         BlocProvider(create: (context) => di.locator<UserArticleModeratedWatcherBloc>()),
       ],

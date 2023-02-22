@@ -305,6 +305,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  file_picker:
+    dependency: "direct main"
+    description:
+      name: file_picker
+      sha256: d090ae03df98b0247b82e5928f44d1b959867049d18d73635e2e0bc3f49542b9
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.5"
   fixnum:
     dependency: transitive
     description:
@@ -431,10 +439,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_math_fork
-      sha256: cfec964c4975c6becc64291eb9b782fe70df5e0c5bfe0763d9e856432fcc6fcd
+      sha256: fa511bdcb91fc35eac155ec5790883886dd9de6572fea549f1ad4660ef6804e9
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.2+2"
+    version: "0.6.3+1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -806,7 +814,7 @@ packages:
     source: hosted
     version: "1.0.1"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: dcea5feb97d8abf90cab9e9030b497fb7c3cbf26b7a1fe9e3ef7dcb0a1ddec95

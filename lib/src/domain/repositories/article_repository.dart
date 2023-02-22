@@ -30,4 +30,5 @@ abstract class ArticleRepository {
     required String deltaJson,
     required List<String> tags,
   });
+  Future<Either<Failure, String>> uploadImage(XFile image);
 }

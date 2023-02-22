@@ -22,7 +22,8 @@ mixin _$ArticleFormEvent {
     required TResult Function(Article article, List<Category> categoryList)
         initialize,
     required TResult Function(String val) title,
-    required TResult Function(BuildContext context, ImageSource source)
+    required TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)
         pickImage,
     required TResult Function(Category category) changeCategory,
     required TResult Function(List<Category> categories) fetchCategories,
@@ -37,7 +38,9 @@ mixin _$ArticleFormEvent {
     TResult? Function()? init,
     TResult? Function(Article article, List<Category> categoryList)? initialize,
     TResult? Function(String val)? title,
-    TResult? Function(BuildContext context, ImageSource source)? pickImage,
+    TResult? Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult? Function(Category category)? changeCategory,
     TResult? Function(List<Category> categories)? fetchCategories,
     TResult? Function(String tag)? addTags,
@@ -51,7 +54,9 @@ mixin _$ArticleFormEvent {
     TResult Function()? init,
     TResult Function(Article article, List<Category> categoryList)? initialize,
     TResult Function(String val)? title,
-    TResult Function(BuildContext context, ImageSource source)? pickImage,
+    TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult Function(Category category)? changeCategory,
     TResult Function(List<Category> categories)? fetchCategories,
     TResult Function(String tag)? addTags,
@@ -164,7 +169,8 @@ class _$_Init implements _Init {
     required TResult Function(Article article, List<Category> categoryList)
         initialize,
     required TResult Function(String val) title,
-    required TResult Function(BuildContext context, ImageSource source)
+    required TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)
         pickImage,
     required TResult Function(Category category) changeCategory,
     required TResult Function(List<Category> categories) fetchCategories,
@@ -182,7 +188,9 @@ class _$_Init implements _Init {
     TResult? Function()? init,
     TResult? Function(Article article, List<Category> categoryList)? initialize,
     TResult? Function(String val)? title,
-    TResult? Function(BuildContext context, ImageSource source)? pickImage,
+    TResult? Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult? Function(Category category)? changeCategory,
     TResult? Function(List<Category> categories)? fetchCategories,
     TResult? Function(String tag)? addTags,
@@ -199,7 +207,9 @@ class _$_Init implements _Init {
     TResult Function()? init,
     TResult Function(Article article, List<Category> categoryList)? initialize,
     TResult Function(String val)? title,
-    TResult Function(BuildContext context, ImageSource source)? pickImage,
+    TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult Function(Category category)? changeCategory,
     TResult Function(List<Category> categories)? fetchCategories,
     TResult Function(String tag)? addTags,
@@ -359,7 +369,8 @@ class _$_Initialize implements _Initialize {
     required TResult Function(Article article, List<Category> categoryList)
         initialize,
     required TResult Function(String val) title,
-    required TResult Function(BuildContext context, ImageSource source)
+    required TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)
         pickImage,
     required TResult Function(Category category) changeCategory,
     required TResult Function(List<Category> categories) fetchCategories,
@@ -377,7 +388,9 @@ class _$_Initialize implements _Initialize {
     TResult? Function()? init,
     TResult? Function(Article article, List<Category> categoryList)? initialize,
     TResult? Function(String val)? title,
-    TResult? Function(BuildContext context, ImageSource source)? pickImage,
+    TResult? Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult? Function(Category category)? changeCategory,
     TResult? Function(List<Category> categories)? fetchCategories,
     TResult? Function(String tag)? addTags,
@@ -394,7 +407,9 @@ class _$_Initialize implements _Initialize {
     TResult Function()? init,
     TResult Function(Article article, List<Category> categoryList)? initialize,
     TResult Function(String val)? title,
-    TResult Function(BuildContext context, ImageSource source)? pickImage,
+    TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult Function(Category category)? changeCategory,
     TResult Function(List<Category> categories)? fetchCategories,
     TResult Function(String tag)? addTags,
@@ -543,7 +558,8 @@ class _$_Title implements _Title {
     required TResult Function(Article article, List<Category> categoryList)
         initialize,
     required TResult Function(String val) title,
-    required TResult Function(BuildContext context, ImageSource source)
+    required TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)
         pickImage,
     required TResult Function(Category category) changeCategory,
     required TResult Function(List<Category> categories) fetchCategories,
@@ -561,7 +577,9 @@ class _$_Title implements _Title {
     TResult? Function()? init,
     TResult? Function(Article article, List<Category> categoryList)? initialize,
     TResult? Function(String val)? title,
-    TResult? Function(BuildContext context, ImageSource source)? pickImage,
+    TResult? Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult? Function(Category category)? changeCategory,
     TResult? Function(List<Category> categories)? fetchCategories,
     TResult? Function(String tag)? addTags,
@@ -578,7 +596,9 @@ class _$_Title implements _Title {
     TResult Function()? init,
     TResult Function(Article article, List<Category> categoryList)? initialize,
     TResult Function(String val)? title,
-    TResult Function(BuildContext context, ImageSource source)? pickImage,
+    TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult Function(Category category)? changeCategory,
     TResult Function(List<Category> categories)? fetchCategories,
     TResult Function(String tag)? addTags,
@@ -664,7 +684,7 @@ abstract class _$$_PickImageCopyWith<$Res> {
           _$_PickImage value, $Res Function(_$_PickImage) then) =
       __$$_PickImageCopyWithImpl<$Res>;
   @useResult
-  $Res call({BuildContext context, ImageSource source});
+  $Res call({BuildContext context, ImageSource source, DeviceType deviceType});
 }
 
 /// @nodoc
@@ -680,6 +700,7 @@ class __$$_PickImageCopyWithImpl<$Res>
   $Res call({
     Object? context = null,
     Object? source = null,
+    Object? deviceType = null,
   }) {
     return _then(_$_PickImage(
       context: null == context
@@ -690,6 +711,10 @@ class __$$_PickImageCopyWithImpl<$Res>
           ? _value.source
           : source // ignore: cast_nullable_to_non_nullable
               as ImageSource,
+      deviceType: null == deviceType
+          ? _value.deviceType
+          : deviceType // ignore: cast_nullable_to_non_nullable
+              as DeviceType,
     ));
   }
 }
@@ -697,16 +722,19 @@ class __$$_PickImageCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_PickImage implements _PickImage {
-  const _$_PickImage({required this.context, required this.source});
+  const _$_PickImage(
+      {required this.context, required this.source, required this.deviceType});
 
   @override
   final BuildContext context;
   @override
   final ImageSource source;
+  @override
+  final DeviceType deviceType;
 
   @override
   String toString() {
-    return 'ArticleFormEvent.pickImage(context: $context, source: $source)';
+    return 'ArticleFormEvent.pickImage(context: $context, source: $source, deviceType: $deviceType)';
   }
 
   @override
@@ -715,11 +743,13 @@ class _$_PickImage implements _PickImage {
         (other.runtimeType == runtimeType &&
             other is _$_PickImage &&
             (identical(other.context, context) || other.context == context) &&
-            (identical(other.source, source) || other.source == source));
+            (identical(other.source, source) || other.source == source) &&
+            (identical(other.deviceType, deviceType) ||
+                other.deviceType == deviceType));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, context, source);
+  int get hashCode => Object.hash(runtimeType, context, source, deviceType);
 
   @JsonKey(ignore: true)
   @override
@@ -734,7 +764,8 @@ class _$_PickImage implements _PickImage {
     required TResult Function(Article article, List<Category> categoryList)
         initialize,
     required TResult Function(String val) title,
-    required TResult Function(BuildContext context, ImageSource source)
+    required TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)
         pickImage,
     required TResult Function(Category category) changeCategory,
     required TResult Function(List<Category> categories) fetchCategories,
@@ -743,7 +774,7 @@ class _$_PickImage implements _PickImage {
     required TResult Function(Delta delta) create,
     required TResult Function(Delta delta) update,
   }) {
-    return pickImage(context, source);
+    return pickImage(context, source, deviceType);
   }
 
   @override
@@ -752,7 +783,9 @@ class _$_PickImage implements _PickImage {
     TResult? Function()? init,
     TResult? Function(Article article, List<Category> categoryList)? initialize,
     TResult? Function(String val)? title,
-    TResult? Function(BuildContext context, ImageSource source)? pickImage,
+    TResult? Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult? Function(Category category)? changeCategory,
     TResult? Function(List<Category> categories)? fetchCategories,
     TResult? Function(String tag)? addTags,
@@ -760,7 +793,7 @@ class _$_PickImage implements _PickImage {
     TResult? Function(Delta delta)? create,
     TResult? Function(Delta delta)? update,
   }) {
-    return pickImage?.call(context, source);
+    return pickImage?.call(context, source, deviceType);
   }
 
   @override
@@ -769,7 +802,9 @@ class _$_PickImage implements _PickImage {
     TResult Function()? init,
     TResult Function(Article article, List<Category> categoryList)? initialize,
     TResult Function(String val)? title,
-    TResult Function(BuildContext context, ImageSource source)? pickImage,
+    TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult Function(Category category)? changeCategory,
     TResult Function(List<Category> categories)? fetchCategories,
     TResult Function(String tag)? addTags,
@@ -779,7 +814,7 @@ class _$_PickImage implements _PickImage {
     required TResult orElse(),
   }) {
     if (pickImage != null) {
-      return pickImage(context, source);
+      return pickImage(context, source, deviceType);
     }
     return orElse();
   }
@@ -843,10 +878,12 @@ class _$_PickImage implements _PickImage {
 abstract class _PickImage implements ArticleFormEvent {
   const factory _PickImage(
       {required final BuildContext context,
-      required final ImageSource source}) = _$_PickImage;
+      required final ImageSource source,
+      required final DeviceType deviceType}) = _$_PickImage;
 
   BuildContext get context;
   ImageSource get source;
+  DeviceType get deviceType;
   @JsonKey(ignore: true)
   _$$_PickImageCopyWith<_$_PickImage> get copyWith =>
       throw _privateConstructorUsedError;
@@ -921,7 +958,8 @@ class _$_ChangeCategory implements _ChangeCategory {
     required TResult Function(Article article, List<Category> categoryList)
         initialize,
     required TResult Function(String val) title,
-    required TResult Function(BuildContext context, ImageSource source)
+    required TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)
         pickImage,
     required TResult Function(Category category) changeCategory,
     required TResult Function(List<Category> categories) fetchCategories,
@@ -939,7 +977,9 @@ class _$_ChangeCategory implements _ChangeCategory {
     TResult? Function()? init,
     TResult? Function(Article article, List<Category> categoryList)? initialize,
     TResult? Function(String val)? title,
-    TResult? Function(BuildContext context, ImageSource source)? pickImage,
+    TResult? Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult? Function(Category category)? changeCategory,
     TResult? Function(List<Category> categories)? fetchCategories,
     TResult? Function(String tag)? addTags,
@@ -956,7 +996,9 @@ class _$_ChangeCategory implements _ChangeCategory {
     TResult Function()? init,
     TResult Function(Article article, List<Category> categoryList)? initialize,
     TResult Function(String val)? title,
-    TResult Function(BuildContext context, ImageSource source)? pickImage,
+    TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult Function(Category category)? changeCategory,
     TResult Function(List<Category> categories)? fetchCategories,
     TResult Function(String tag)? addTags,
@@ -1112,7 +1154,8 @@ class _$_FetchCategories implements _FetchCategories {
     required TResult Function(Article article, List<Category> categoryList)
         initialize,
     required TResult Function(String val) title,
-    required TResult Function(BuildContext context, ImageSource source)
+    required TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)
         pickImage,
     required TResult Function(Category category) changeCategory,
     required TResult Function(List<Category> categories) fetchCategories,
@@ -1130,7 +1173,9 @@ class _$_FetchCategories implements _FetchCategories {
     TResult? Function()? init,
     TResult? Function(Article article, List<Category> categoryList)? initialize,
     TResult? Function(String val)? title,
-    TResult? Function(BuildContext context, ImageSource source)? pickImage,
+    TResult? Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult? Function(Category category)? changeCategory,
     TResult? Function(List<Category> categories)? fetchCategories,
     TResult? Function(String tag)? addTags,
@@ -1147,7 +1192,9 @@ class _$_FetchCategories implements _FetchCategories {
     TResult Function()? init,
     TResult Function(Article article, List<Category> categoryList)? initialize,
     TResult Function(String val)? title,
-    TResult Function(BuildContext context, ImageSource source)? pickImage,
+    TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult Function(Category category)? changeCategory,
     TResult Function(List<Category> categories)? fetchCategories,
     TResult Function(String tag)? addTags,
@@ -1295,7 +1342,8 @@ class _$_AddTags implements _AddTags {
     required TResult Function(Article article, List<Category> categoryList)
         initialize,
     required TResult Function(String val) title,
-    required TResult Function(BuildContext context, ImageSource source)
+    required TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)
         pickImage,
     required TResult Function(Category category) changeCategory,
     required TResult Function(List<Category> categories) fetchCategories,
@@ -1313,7 +1361,9 @@ class _$_AddTags implements _AddTags {
     TResult? Function()? init,
     TResult? Function(Article article, List<Category> categoryList)? initialize,
     TResult? Function(String val)? title,
-    TResult? Function(BuildContext context, ImageSource source)? pickImage,
+    TResult? Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult? Function(Category category)? changeCategory,
     TResult? Function(List<Category> categories)? fetchCategories,
     TResult? Function(String tag)? addTags,
@@ -1330,7 +1380,9 @@ class _$_AddTags implements _AddTags {
     TResult Function()? init,
     TResult Function(Article article, List<Category> categoryList)? initialize,
     TResult Function(String val)? title,
-    TResult Function(BuildContext context, ImageSource source)? pickImage,
+    TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult Function(Category category)? changeCategory,
     TResult Function(List<Category> categories)? fetchCategories,
     TResult Function(String tag)? addTags,
@@ -1478,7 +1530,8 @@ class _$_RemoveTags implements _RemoveTags {
     required TResult Function(Article article, List<Category> categoryList)
         initialize,
     required TResult Function(String val) title,
-    required TResult Function(BuildContext context, ImageSource source)
+    required TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)
         pickImage,
     required TResult Function(Category category) changeCategory,
     required TResult Function(List<Category> categories) fetchCategories,
@@ -1496,7 +1549,9 @@ class _$_RemoveTags implements _RemoveTags {
     TResult? Function()? init,
     TResult? Function(Article article, List<Category> categoryList)? initialize,
     TResult? Function(String val)? title,
-    TResult? Function(BuildContext context, ImageSource source)? pickImage,
+    TResult? Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult? Function(Category category)? changeCategory,
     TResult? Function(List<Category> categories)? fetchCategories,
     TResult? Function(String tag)? addTags,
@@ -1513,7 +1568,9 @@ class _$_RemoveTags implements _RemoveTags {
     TResult Function()? init,
     TResult Function(Article article, List<Category> categoryList)? initialize,
     TResult Function(String val)? title,
-    TResult Function(BuildContext context, ImageSource source)? pickImage,
+    TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult Function(Category category)? changeCategory,
     TResult Function(List<Category> categories)? fetchCategories,
     TResult Function(String tag)? addTags,
@@ -1659,7 +1716,8 @@ class _$_Create implements _Create {
     required TResult Function(Article article, List<Category> categoryList)
         initialize,
     required TResult Function(String val) title,
-    required TResult Function(BuildContext context, ImageSource source)
+    required TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)
         pickImage,
     required TResult Function(Category category) changeCategory,
     required TResult Function(List<Category> categories) fetchCategories,
@@ -1677,7 +1735,9 @@ class _$_Create implements _Create {
     TResult? Function()? init,
     TResult? Function(Article article, List<Category> categoryList)? initialize,
     TResult? Function(String val)? title,
-    TResult? Function(BuildContext context, ImageSource source)? pickImage,
+    TResult? Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult? Function(Category category)? changeCategory,
     TResult? Function(List<Category> categories)? fetchCategories,
     TResult? Function(String tag)? addTags,
@@ -1694,7 +1754,9 @@ class _$_Create implements _Create {
     TResult Function()? init,
     TResult Function(Article article, List<Category> categoryList)? initialize,
     TResult Function(String val)? title,
-    TResult Function(BuildContext context, ImageSource source)? pickImage,
+    TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult Function(Category category)? changeCategory,
     TResult Function(List<Category> categories)? fetchCategories,
     TResult Function(String tag)? addTags,
@@ -1840,7 +1902,8 @@ class _$_Update implements _Update {
     required TResult Function(Article article, List<Category> categoryList)
         initialize,
     required TResult Function(String val) title,
-    required TResult Function(BuildContext context, ImageSource source)
+    required TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)
         pickImage,
     required TResult Function(Category category) changeCategory,
     required TResult Function(List<Category> categories) fetchCategories,
@@ -1858,7 +1921,9 @@ class _$_Update implements _Update {
     TResult? Function()? init,
     TResult? Function(Article article, List<Category> categoryList)? initialize,
     TResult? Function(String val)? title,
-    TResult? Function(BuildContext context, ImageSource source)? pickImage,
+    TResult? Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult? Function(Category category)? changeCategory,
     TResult? Function(List<Category> categories)? fetchCategories,
     TResult? Function(String tag)? addTags,
@@ -1875,7 +1940,9 @@ class _$_Update implements _Update {
     TResult Function()? init,
     TResult Function(Article article, List<Category> categoryList)? initialize,
     TResult Function(String val)? title,
-    TResult Function(BuildContext context, ImageSource source)? pickImage,
+    TResult Function(
+            BuildContext context, ImageSource source, DeviceType deviceType)?
+        pickImage,
     TResult Function(Category category)? changeCategory,
     TResult Function(List<Category> categories)? fetchCategories,
     TResult Function(String tag)? addTags,

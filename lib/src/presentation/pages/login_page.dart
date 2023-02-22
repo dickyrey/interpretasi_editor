@@ -55,6 +55,7 @@ class LoginPage extends StatelessWidget {
         body: ResponsiveLayout(
           mobileBody: _LoginMobileBody(),
           desktopBody: _LoginDesktopBody(),
+          webBody: _LoginDesktopBody(),
         ),
       ),
     );

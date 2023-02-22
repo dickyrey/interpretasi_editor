@@ -8,7 +8,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:interpretasi_editor/src/common/colors.dart';
 import 'package:interpretasi_editor/src/common/const.dart';
 import 'package:interpretasi_editor/src/common/enums.dart';
+import 'package:interpretasi_editor/src/common/routes.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/article_form/article_form_bloc.dart';
+import 'package:interpretasi_editor/src/presentation/bloc/auth_watcher/auth_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/category_watcher/category_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/user_article_drafted_watcher/user_article_drafted_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/widget/elevated_button_widget.dart';
@@ -24,7 +26,6 @@ class ArticleFormPage extends StatefulWidget {
     required this.isEdit,
     super.key,
   });
-
   final bool isEdit;
 
   @override
@@ -66,116 +67,105 @@ class _ArticleFormPageState extends State<ArticleFormPage> {
       selection: const TextSelection.collapsed(offset: 0),
     );
 
-    return BlocConsumer<ArticleFormBloc, ArticleFormState>(
-      listener: (context, state) {
-        if (state.message == ExceptionMessage.thumbnailNull) {
-          final snack = showSnackbar(
-            context,
-            type: SnackbarType.error,
-            labelText: lang.please_insert_a_thumbnail,
-            labelButton: lang.close,
-            onTap: () {},
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snack);
-        } else if (state.message == ExceptionMessage.titleNull) {
-          final snack = showSnackbar(
-            context,
-            type: SnackbarType.error,
-            labelText: lang.please_write_a_title,
-            labelButton: lang.close,
-            onTap: () {},
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snack);
-        } else if (state.message == ExceptionMessage.categoryNull) {
-          final snack = showSnackbar(
-            context,
-            type: SnackbarType.error,
-            labelText: lang.please_select_a_category,
-            labelButton: lang.close,
-            onTap: () {},
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snack);
-        } else if (state.message == ExceptionMessage.tagNull) {
-          final snack = showSnackbar(
-            context,
-            type: SnackbarType.error,
-            labelText: lang.please_fill_in_some_tags,
-            labelButton: lang.close,
-            onTap: () {},
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snack);
-        } else if (state.state == RequestState.loaded) {
-          context
-              .read<UserArticleDraftedWatcherBloc>()
-              .add(const UserArticleDraftedWatcherEvent.fetch());
-          final snack = showSnackbar(
-            context,
-            type: SnackbarType.success,
-            labelText: lang.saved_successfully_in_draft,
-            labelButton: lang.close,
-            onTap: () {},
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snack);
-          Navigator.pop(context);
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          appBar: _appBar(context),
-          body: ResponsiveLayout(
-            mobileBody: Form(
-              key: _formKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: PageView(
-                controller: _pageCtrl,
-                onPageChanged: (v) {
-                  setState(() {
-                    _selectedIndex = v;
-                  });
-                },
-                children: [
-                  _DetailsWidget(
-                    titleCtrl: _titleCtrl,
-                    tagCtrl: _tagCtrl,
-                  ),
-                  _EditorWidget(
-                    controller: _quillCtrl,
-                    focusNode: _focusNode,
-                    scrollController: _scrollCtrl,
-                  ),
-                ],
-              ),
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthWatcherBloc, AuthWatcherState>(
+          listener: (context, state) {
+            state.maybeMap(
+              orElse: () {},
+              notAuthenticated: (_) {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  LOGIN,
+                  (Route<dynamic> route) => false,
+                );
+              },
+            );
+          },
+        ),
+        BlocListener<ArticleFormBloc, ArticleFormState>(
+          listener: (context, state) {
+            if (state.message == ExceptionMessage.thumbnailNull) {
+            } else if (state.message == ExceptionMessage.titleNull) {
+              final snack = showSnackbar(
+                context,
+                type: SnackbarType.error,
+                labelText: lang.please_write_a_title,
+                labelButton: lang.close,
+                onTap: () {},
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snack);
+            } else if (state.message == ExceptionMessage.categoryNull) {
+              final snack = showSnackbar(
+                context,
+                type: SnackbarType.error,
+                labelText: lang.please_select_a_category,
+                labelButton: lang.close,
+                onTap: () {},
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snack);
+            } else if (state.message == ExceptionMessage.tagNull) {
+              final snack = showSnackbar(
+                context,
+                type: SnackbarType.error,
+                labelText: lang.please_fill_in_some_tags,
+                labelButton: lang.close,
+                onTap: () {},
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snack);
+            } else if (state.state == RequestState.loaded) {
+              context
+                  .read<UserArticleDraftedWatcherBloc>()
+                  .add(const UserArticleDraftedWatcherEvent.fetch());
+              final snack = showSnackbar(
+                context,
+                type: SnackbarType.success,
+                labelText: lang.saved_successfully_in_draft,
+                labelButton: lang.close,
+                onTap: () {},
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snack);
+              Navigator.pop(context);
+            }
+          },
+        ),
+      ],
+      child: Scaffold(
+        appBar: _appBar(context),
+        body: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: ResponsiveLayout(
+            mobileBody: _MobileBodyWidget(
+              pageCtrl: _pageCtrl,
+              onPageChanged: (v) => setState(() => _selectedIndex = v),
+              tagCtrl: _tagCtrl,
+              titleCtrl: _titleCtrl,
+              quillCtrl: _quillCtrl,
+              focusNode: _focusNode,
+              scrollCtrl: _scrollCtrl,
             ),
-            desktopBody: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 500),
-              alignment: Alignment.topCenter,
-              child: Form(
-                key: _formKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: PageView(
-                  controller: _pageCtrl,
-                  onPageChanged: (v) {
-                    setState(() {
-                      _selectedIndex = v;
-                    });
-                  },
-                  children: [
-                    _DetailsWidget(
-                      titleCtrl: _titleCtrl,
-                      tagCtrl: _tagCtrl,
-                    ),
-                    _EditorWidget(
-                      controller: _quillCtrl,
-                      focusNode: _focusNode,
-                      scrollController: _scrollCtrl,
-                    ),
-                  ],
-                ),
-              ),
+            desktopBody: _DesktopBodyWidget(
+              pageCtrl: _pageCtrl,
+              onPageChanged: (v) => setState(() => _selectedIndex = v),
+              tagCtrl: _tagCtrl,
+              titleCtrl: _titleCtrl,
+              quillCtrl: _quillCtrl,
+              focusNode: _focusNode,
+              scrollCtrl: _scrollCtrl,
+            ),
+            webBody: _WebBodyWidget(
+              pageCtrl: _pageCtrl,
+              onPageChanged: (v) => setState(() => _selectedIndex = v),
+              tagCtrl: _tagCtrl,
+              titleCtrl: _titleCtrl,
+              quillCtrl: _quillCtrl,
+              focusNode: _focusNode,
+              scrollCtrl: _scrollCtrl,
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -187,7 +177,16 @@ class _ArticleFormPageState extends State<ArticleFormPage> {
       backgroundColor: theme.colorScheme.background,
       elevation: .5,
       leading: IconButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: () {
+          if (_selectedIndex == 1) {
+            _pageCtrl.previousPage(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+            );
+          } else {
+            Navigator.pop(context);
+          }
+        },
         icon: Icon(
           FeatherIcons.arrowLeft,
           color: theme.iconTheme.color,
@@ -206,9 +205,35 @@ class _ArticleFormPageState extends State<ArticleFormPage> {
                 labelSize: 12,
                 onTap: () {
                   if (widget.isEdit == true) {
-                    if (state.title != '' &&
-                        state.selectedCategory != null &&
-                        state.tagList.isNotEmpty) {
+                    if (state.title == '') {
+                      final snack = showSnackbar(
+                        context,
+                        type: SnackbarType.error,
+                        labelText: lang.please_write_a_title,
+                        labelButton: lang.close,
+                        onTap: () {},
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snack);
+                    } else if (state.selectedCategory == null) {
+                      final snack = showSnackbar(
+                        context,
+                        type: SnackbarType.error,
+                        labelText: lang.please_select_a_category,
+                        labelButton: lang.close,
+                        onTap: () {},
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snack);
+                      // ignore: inference_failure_on_collection_literal
+                    } else if (state.tagList.isEmpty || state.tagList == []) {
+                      final snack = showSnackbar(
+                        context,
+                        type: SnackbarType.error,
+                        labelText: lang.please_fill_in_some_tags,
+                        labelButton: lang.close,
+                        onTap: () {},
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snack);
+                    } else {
                       if (_selectedIndex == 0) {
                         _pageCtrl.nextPage(
                           duration: const Duration(milliseconds: 500),
@@ -220,14 +245,46 @@ class _ArticleFormPageState extends State<ArticleFormPage> {
                             .read<ArticleFormBloc>()
                             .add(ArticleFormEvent.update(delta));
                       }
-                    } else {
-                      showToast(msg: lang.please_check_again_before_continue);
                     }
                   } else {
-                    if (state.imageFile != null &&
-                        state.title != '' &&
-                        state.selectedCategory != null &&
-                        state.tagList.isNotEmpty) {
+                    if (state.imageFile == null) {
+                      final snack = showSnackbar(
+                        context,
+                        type: SnackbarType.error,
+                        labelText: lang.please_insert_a_thumbnail,
+                        labelButton: lang.close,
+                        onTap: () {},
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snack);
+                    } else if (state.title == '') {
+                      final snack = showSnackbar(
+                        context,
+                        type: SnackbarType.error,
+                        labelText: lang.please_write_a_title,
+                        labelButton: lang.close,
+                        onTap: () {},
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snack);
+                    } else if (state.selectedCategory == null) {
+                      final snack = showSnackbar(
+                        context,
+                        type: SnackbarType.error,
+                        labelText: lang.please_select_a_category,
+                        labelButton: lang.close,
+                        onTap: () {},
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snack);
+                      // ignore: inference_failure_on_collection_literal
+                    } else if (state.tagList.isEmpty || state.tagList == []) {
+                      final snack = showSnackbar(
+                        context,
+                        type: SnackbarType.error,
+                        labelText: lang.please_fill_in_some_tags,
+                        labelButton: lang.close,
+                        onTap: () {},
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snack);
+                    } else {
                       if (_selectedIndex == 0) {
                         _pageCtrl.nextPage(
                           duration: const Duration(milliseconds: 500),
@@ -239,8 +296,6 @@ class _ArticleFormPageState extends State<ArticleFormPage> {
                             .read<ArticleFormBloc>()
                             .add(ArticleFormEvent.create(delta));
                       }
-                    } else {
-                      showToast(msg: lang.please_check_again_before_continue);
                     }
                   }
                 },
@@ -254,26 +309,158 @@ class _ArticleFormPageState extends State<ArticleFormPage> {
   }
 }
 
-class _DetailsWidget extends StatelessWidget {
-  const _DetailsWidget({
+class _MobileBodyWidget extends StatelessWidget {
+  const _MobileBodyWidget({
+    required this.pageCtrl,
+    required this.onPageChanged,
     required this.titleCtrl,
     required this.tagCtrl,
+    required this.quillCtrl,
+    required this.focusNode,
+    required this.scrollCtrl,
+  });
+
+  final PageController pageCtrl;
+  final void Function(int) onPageChanged;
+  final TextEditingController titleCtrl;
+  final TextEditingController tagCtrl;
+  final QuillController quillCtrl;
+  final FocusNode focusNode;
+  final ScrollController scrollCtrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+      controller: pageCtrl,
+      onPageChanged: onPageChanged,
+      children: [
+        _ArticleInformationWidget(
+          titleCtrl: titleCtrl,
+          tagCtrl: tagCtrl,
+          deviceType: DeviceType.mobile,
+        ),
+        _QuillEditorWidget(
+          quillCtrl: quillCtrl,
+          focusNode: focusNode,
+          scrollCtrl: scrollCtrl,
+          deviceType: DeviceType.mobile,
+        ),
+      ],
+    );
+  }
+}
+
+class _DesktopBodyWidget extends StatelessWidget {
+  const _DesktopBodyWidget({
+    required this.pageCtrl,
+    required this.onPageChanged,
+    required this.titleCtrl,
+    required this.tagCtrl,
+    required this.quillCtrl,
+    required this.focusNode,
+    required this.scrollCtrl,
+  });
+
+  final PageController pageCtrl;
+  final void Function(int) onPageChanged;
+  final TextEditingController titleCtrl;
+  final TextEditingController tagCtrl;
+  final QuillController quillCtrl;
+  final FocusNode focusNode;
+  final ScrollController scrollCtrl;
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+      controller: pageCtrl,
+      onPageChanged: onPageChanged,
+      children: [
+        _ArticleInformationWidget(
+          titleCtrl: titleCtrl,
+          tagCtrl: tagCtrl,
+          deviceType: DeviceType.desktop,
+        ),
+        _QuillEditorWidget(
+          quillCtrl: quillCtrl,
+          focusNode: focusNode,
+          scrollCtrl: scrollCtrl,
+          deviceType: DeviceType.desktop,
+        ),
+      ],
+    );
+  }
+}
+
+class _WebBodyWidget extends StatelessWidget {
+  const _WebBodyWidget({
+    required this.pageCtrl,
+    required this.onPageChanged,
+    required this.titleCtrl,
+    required this.tagCtrl,
+    required this.quillCtrl,
+    required this.focusNode,
+    required this.scrollCtrl,
+  });
+
+  final PageController pageCtrl;
+  final void Function(int) onPageChanged;
+  final TextEditingController titleCtrl;
+  final TextEditingController tagCtrl;
+  final QuillController quillCtrl;
+  final FocusNode focusNode;
+  final ScrollController scrollCtrl;
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+      controller: pageCtrl,
+      onPageChanged: onPageChanged,
+      children: [
+        _ArticleInformationWidget(
+          titleCtrl: titleCtrl,
+          tagCtrl: tagCtrl,
+          deviceType: DeviceType.web,
+        ),
+        _QuillEditorWidget(
+          quillCtrl: quillCtrl,
+          focusNode: focusNode,
+          scrollCtrl: scrollCtrl,
+          deviceType: DeviceType.web,
+        ),
+      ],
+    );
+  }
+}
+
+class _ArticleInformationWidget extends StatelessWidget {
+  const _ArticleInformationWidget({
+    required this.titleCtrl,
+    required this.tagCtrl,
+    required this.deviceType,
   });
 
   final TextEditingController titleCtrl;
   final TextEditingController tagCtrl;
+  final DeviceType deviceType;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final lang = AppLocalizations.of(context)!;
 
+    double maxWidth;
+    if (deviceType == DeviceType.mobile) {
+      maxWidth = Const.mobileWidth;
+    } else if (deviceType == DeviceType.desktop) {
+      maxWidth = Const.desktopWidth;
+    } else {
+      maxWidth = Const.desktopWidth;
+    }
     return BlocBuilder<ArticleFormBloc, ArticleFormState>(
       builder: (context, state) {
         return SingleChildScrollView(
           padding: const EdgeInsets.all(Const.margin),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               InkWell(
                 borderRadius: BorderRadius.circular(Const.radius),
@@ -281,136 +468,151 @@ class _DetailsWidget extends StatelessWidget {
                       ArticleFormEvent.pickImage(
                         context: context,
                         source: ImageSource.gallery,
+                        deviceType: deviceType,
                       ),
                     ),
-                child: Container(
-                  constraints: const BoxConstraints(
-                    maxWidth: 444,
-                    maxHeight: 250,
+                child: Center(
+                  child: Container(
+                    constraints: const BoxConstraints(
+                      maxWidth: Const.mobileWidth,
+                      maxHeight: 250,
+                    ),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: theme.disabledColor),
+                      borderRadius: BorderRadius.circular(Const.radius),
+                      image: (state.imageMemory != null)
+                          ? DecorationImage(
+                              image: MemoryImage(state.imageMemory!),
+                              fit: BoxFit.cover,
+                            )
+                          : (state.imageUrl != '')
+                              ? DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: CachedNetworkImageProvider(
+                                    state.imageUrl,
+                                  ),
+                                )
+                              : null,
+                    ),
+                    child: (state.imageFile != null || state.imageUrl != '')
+                        ? const SizedBox()
+                        : Text(
+                            lang.upload_thumbnail,
+                            style: theme.textTheme.bodyLarge,
+                          ),
                   ),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: theme.disabledColor),
-                    borderRadius: BorderRadius.circular(Const.radius),
-                    image: (state.imageMemory != null)
-                        ? DecorationImage(
-                            image: MemoryImage(state.imageMemory!),
-                            fit: BoxFit.contain,
-                          )
-                        : (state.imageUrl != '')
-                            ? DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                  state.imageUrl,
+                ),
+              ),
+              Center(
+                child: SizedBox(
+                  width: maxWidth,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: Const.space15),
+                      Text(
+                        lang.your_awesome_title,
+                        style: theme.textTheme.titleMedium,
+                        textAlign: TextAlign.start,
+                      ),
+                      const SizedBox(height: Const.space8),
+                      TextFormFieldWidget(
+                        controller: titleCtrl,
+                        maxLines: null,
+                        hintText: lang.ten_ways_to_explore_this_world,
+                        onChanged: (v) {
+                          context
+                              .read<ArticleFormBloc>()
+                              .add(ArticleFormEvent.title(v));
+                        },
+                      ),
+                      const SizedBox(height: Const.space15),
+                      Text(
+                        lang.choose_a_category,
+                        style: theme.textTheme.titleMedium,
+                        textAlign: TextAlign.start,
+                      ),
+                      const SizedBox(height: Const.space8),
+                      DropdownButtonHideUnderline(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Const.space12,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(Const.radius),
+                            border: Border.all(
+                              color: theme.disabledColor,
+                            ),
+                          ),
+                          child: DropdownButton(
+                            value: state.selectedCategory,
+                            isExpanded: true,
+                            dropdownColor: theme.cardColor,
+                            borderRadius: BorderRadius.circular(Const.radius),
+                            style: theme.textTheme.bodyMedium,
+                            hint: Text(
+                              lang.select_category,
+                              style: theme.textTheme.titleMedium,
+                            ),
+                            items: state.categoryList.map((category) {
+                              return DropdownMenuItem(
+                                value: category,
+                                child: Text(
+                                  category.name,
+                                  style: theme.textTheme.titleMedium,
                                 ),
-                              )
-                            : null,
-                  ),
-                  child: (state.imageFile != null || state.imageUrl != '')
-                      ? const SizedBox()
-                      : Text(
-                          lang.upload_thumbnail,
-                          style: theme.textTheme.bodyLarge,
+                              );
+                            }).toList(),
+                            onChanged: (v) {
+                              context
+                                  .read<ArticleFormBloc>()
+                                  .add(ArticleFormEvent.changeCategory(v!));
+                            },
+                          ),
                         ),
-                ),
-              ),
-              const SizedBox(height: Const.space15),
-              Text(
-                lang.your_awesome_title,
-                style: theme.textTheme.titleMedium,
-                textAlign: TextAlign.start,
-              ),
-              const SizedBox(height: Const.space8),
-              TextFormFieldWidget(
-                controller: titleCtrl,
-                maxLines: null,
-                hintText: lang.ten_ways_to_explore_this_world,
-                onChanged: (v) {
-                  context
-                      .read<ArticleFormBloc>()
-                      .add(ArticleFormEvent.title(v));
-                },
-              ),
-              const SizedBox(height: Const.space15),
-              Text(
-                lang.choose_a_category,
-                style: theme.textTheme.titleMedium,
-                textAlign: TextAlign.start,
-              ),
-              const SizedBox(height: Const.space8),
-              DropdownButtonHideUnderline(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: Const.space12),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Const.radius),
-                    border: Border.all(
-                      color: theme.disabledColor,
-                    ),
-                  ),
-                  child: DropdownButton(
-                    value: state.selectedCategory,
-                    isExpanded: true,
-                    dropdownColor: theme.cardColor,
-                    borderRadius: BorderRadius.circular(Const.radius),
-                    style: theme.textTheme.bodyMedium,
-                    hint: Text(
-                      lang.select_category,
-                      style: theme.textTheme.titleMedium,
-                    ),
-                    items: state.categoryList.map((category) {
-                      return DropdownMenuItem(
-                        value: category,
-                        child: Text(
-                          category.name,
-                          style: theme.textTheme.titleMedium,
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (v) {
-                      context
-                          .read<ArticleFormBloc>()
-                          .add(ArticleFormEvent.changeCategory(v!));
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(height: Const.space15),
-              Text(
-                lang.related_tags,
-                style: theme.textTheme.titleMedium,
-                textAlign: TextAlign.start,
-              ),
-              const SizedBox(height: Const.space8),
-              TextFieldWidget(
-                controller: tagCtrl,
-                showBorder: true,
-                onSubmitted: (v) {
-                  context
-                      .read<ArticleFormBloc>()
-                      .add(ArticleFormEvent.addTags(v));
-                  tagCtrl.clear();
-                },
-                hintText: lang.your_tags,
-              ),
-              const SizedBox(height: Const.space8),
-              Wrap(
-                children: state.tagList.map((tag) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: Const.space8),
-                    child: Chip(
-                      labelPadding: const EdgeInsets.symmetric(
-                        horizontal: Const.space8,
                       ),
-                      label: Text(tag),
-                      onDeleted: () {
-                        context
-                            .read<ArticleFormBloc>()
-                            .add(ArticleFormEvent.removeTags(tag));
-                      },
-                    ),
-                  );
-                }).toList(),
-              ),
+                      const SizedBox(height: Const.space15),
+                      Text(
+                        lang.related_tags,
+                        style: theme.textTheme.titleMedium,
+                        textAlign: TextAlign.start,
+                      ),
+                      const SizedBox(height: Const.space8),
+                      TextFieldWidget(
+                        controller: tagCtrl,
+                        showBorder: true,
+                        onSubmitted: (v) {
+                          context
+                              .read<ArticleFormBloc>()
+                              .add(ArticleFormEvent.addTags(v));
+                          tagCtrl.clear();
+                        },
+                        hintText: lang.your_tags,
+                      ),
+                      const SizedBox(height: Const.space8),
+                      Wrap(
+                        children: state.tagList.map((tag) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: Const.space8),
+                            child: Chip(
+                              labelPadding: const EdgeInsets.symmetric(
+                                horizontal: Const.space8,
+                              ),
+                              label: Text(tag),
+                              onDeleted: () {
+                                context
+                                    .read<ArticleFormBloc>()
+                                    .add(ArticleFormEvent.removeTags(tag));
+                              },
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         );
@@ -419,54 +621,61 @@ class _DetailsWidget extends StatelessWidget {
   }
 }
 
-class _EditorWidget extends StatelessWidget {
-  const _EditorWidget({
-    required this.controller,
+class _QuillEditorWidget extends StatelessWidget {
+  const _QuillEditorWidget({
+    required this.quillCtrl,
     required this.focusNode,
-    required this.scrollController,
+    required this.scrollCtrl,
+    required this.deviceType,
   });
 
-  final QuillController controller;
+  final QuillController quillCtrl;
   final FocusNode focusNode;
-  final ScrollController scrollController;
+  final ScrollController scrollCtrl;
+  final DeviceType deviceType;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    double maxWidth;
+    if (deviceType == DeviceType.mobile) {
+      maxWidth = 400;
+    } else if (deviceType == DeviceType.desktop) {
+      maxWidth = 600;
+    } else {
+      maxWidth = 800;
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         QuillToolbar.basic(
-          controller: controller,
+          controller: quillCtrl,
           toolbarIconSize: 23,
           showFontFamily: false,
           showFontSize: false,
-          // customButtons: [
-          //   QuillCustomButton(
-          //     icon: FeatherIcons.image,
-          //     onTap: () {},
-          //   ),
-          // ],
         ),
+        const SizedBox(height: Const.space25),
         Expanded(
           child: Container(
+            constraints: BoxConstraints(
+              maxWidth: maxWidth,
+            ),
             decoration: BoxDecoration(
               color: theme.cardColor,
               borderRadius: BorderRadius.circular(Const.radius),
             ),
             padding: const EdgeInsets.all(Const.margin),
             child: QuillEditor(
-              controller: controller,
+              controller: quillCtrl,
               readOnly: false,
               focusNode: focusNode,
-              scrollController: scrollController,
+              scrollController: scrollCtrl,
               scrollable: true,
               padding: EdgeInsets.zero,
               autoFocus: false,
               expands: false,
-              onImagePaste: (imageBytes) async {
-                return '';
-              },
               customStyles: DefaultStyles(
                 color: ColorLight.fontTitle,
                 h1: DefaultTextBlockStyle(
@@ -488,7 +697,9 @@ class _EditorWidget extends StatelessWidget {
                   null,
                 ),
                 paragraph: DefaultTextBlockStyle(
-                  theme.textTheme.titleLarge!,
+                  theme.textTheme.titleLarge!.copyWith(
+                    fontSize: 16,
+                  ),
                   const Tuple2(2, 0),
                   const Tuple2(0, 0),
                   null,

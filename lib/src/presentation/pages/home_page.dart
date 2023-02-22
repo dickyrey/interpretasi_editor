@@ -6,6 +6,7 @@ import 'package:interpretasi_editor/src/common/enums.dart';
 import 'package:interpretasi_editor/src/common/routes.dart';
 import 'package:interpretasi_editor/src/common/screens.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/article_form/article_form_bloc.dart';
+import 'package:interpretasi_editor/src/presentation/bloc/auth_watcher/auth_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/delete_article_actor/delete_article_actor_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/user_article_drafted_watcher/user_article_drafted_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/widget/article_card_widget.dart';
@@ -32,20 +33,38 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return BlocListener<DeleteArticleActorBloc, DeleteArticleActorState>(
-      listener: (context, state) {
-        state.maybeMap(
-          orElse: () {},
-          success: (_) {
-            context
-                .read<UserArticleDraftedWatcherBloc>()
-                .add(const UserArticleDraftedWatcherEvent.fetch());
-            context
-                .read<DeleteArticleActorBloc>()
-                .add(const DeleteArticleActorEvent.init());
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<DeleteArticleActorBloc, DeleteArticleActorState>(
+          listener: (context, state) {
+            state.maybeMap(
+              orElse: () {},
+              success: (_) {
+                context
+                    .read<UserArticleDraftedWatcherBloc>()
+                    .add(const UserArticleDraftedWatcherEvent.fetch());
+                context
+                    .read<DeleteArticleActorBloc>()
+                    .add(const DeleteArticleActorEvent.init());
+              },
+            );
           },
-        );
-      },
+        ),
+        BlocListener<AuthWatcherBloc, AuthWatcherState>(
+          listener: (context, state) {
+            state.maybeMap(
+              orElse: () {},
+              notAuthenticated: (_) {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  LOGIN,
+                  (Route<dynamic> route) => false,
+                );
+              },
+            );
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: theme.colorScheme.background,

@@ -27,6 +27,7 @@ import 'package:interpretasi_editor/src/domain/usecases/get_rejected_article.dar
 import 'package:interpretasi_editor/src/domain/usecases/sign_in_with_email.dart';
 import 'package:interpretasi_editor/src/domain/usecases/sign_out.dart';
 import 'package:interpretasi_editor/src/domain/usecases/update_article.dart';
+import 'package:interpretasi_editor/src/domain/usecases/upload_image.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/article_form/article_form_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/auth_watcher/auth_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/category_watcher/category_watcher_bloc.dart';
@@ -34,6 +35,7 @@ import 'package:interpretasi_editor/src/presentation/bloc/delete_article_actor/d
 import 'package:interpretasi_editor/src/presentation/bloc/localization_watcher/localization_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/sign_in_with_email_form/sign_in_with_email_form_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/theme_watcher/theme_watcher_bloc.dart';
+import 'package:interpretasi_editor/src/presentation/bloc/upload_image_actor/upload_image_actor_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/user_article_drafted_watcher/user_article_drafted_watcher_bloc.dart';
 import 'package:interpretasi_editor/src/presentation/bloc/user_article_moderated_watcher/user_article_moderated_watcher_bloc.dart';
 
@@ -78,12 +80,12 @@ void init() {
   locator.registerLazySingleton<ArticleRepository>(
     () => articleRepository,
   );
-  
+
   final authRepository = AuthRepositoryImpl(locator());
   locator.registerLazySingleton<AuthRepository>(
     () => authRepository,
   );
-  
+
   final categoryRepository = CategoryRepositoryImpl(locator());
   locator.registerLazySingleton<CategoryRepository>(
     () => categoryRepository,
@@ -149,7 +151,6 @@ void init() {
   locator.registerLazySingleton(
     () => signInWithEmailUseCase,
   );
-  
   final signOutUseCase = SignOut(locator());
   locator.registerLazySingleton(
     () => signOutUseCase,
@@ -157,6 +158,10 @@ void init() {
   final updateArticleUseCase = UpdateArticle(locator());
   locator.registerLazySingleton(
     () => updateArticleUseCase,
+  );
+  final uploadImageUseCase = UploadImage(locator());
+  locator.registerLazySingleton(
+    () => uploadImageUseCase,
   );
 
   /// List of [BLoCs]
@@ -198,10 +203,15 @@ void init() {
   locator.registerLazySingleton(
     () => signInWithEmailFormBloc,
   );
-  
+
   final themeWatcherBloc = ThemeWatcherBloc();
   locator.registerLazySingleton(
     () => themeWatcherBloc,
+  );
+
+  final uploadImageActorBloc = UploadImageActorBloc(locator());
+  locator.registerLazySingleton(
+    () => uploadImageActorBloc,
   );
 
   final userArticleDraftedBloc = UserArticleDraftedWatcherBloc(locator());

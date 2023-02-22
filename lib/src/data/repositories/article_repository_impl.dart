@@ -124,4 +124,18 @@ class ArticleRepositoryImpl extends ArticleRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, String>> uploadImage(XFile image) async {
+    try {
+      final result = await dataSource.uploadImage(image);
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } on SocketException {
+      return const Left(
+        ConnectionFailure(ExceptionMessage.internetNotConnected),
+      );
+    }
+  }
 }

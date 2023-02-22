@@ -6,7 +6,10 @@ class Const {
   static const double space50 = 50;
   static const double radius = 8;
   static const double margin = 18;
-  static const double mobileWidth = 600;
+  
+  static const double webWidth = 1100;
+  static const double desktopWidth = 650;
+  static const double mobileWidth = 450;
 
   static const String token = 'access_token';
   static const String host = 'interpretasi.id';
@@ -39,6 +42,7 @@ class ExceptionMessage {
   static const String wrongPassword = 'wrong-password';
   static const String userNotFound = 'user-not-found';
   static const String signInCancelled = 'sign-in-cancelled';
+  static const String unauthenticated = 'Unauthenticated';
 
   // Article Form Validation
   static const String thumbnailNull = 'thumbnail-null';

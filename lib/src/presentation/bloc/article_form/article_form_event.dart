@@ -11,6 +11,7 @@ class ArticleFormEvent with _$ArticleFormEvent {
   const factory ArticleFormEvent.pickImage({
     required BuildContext context,
     required ImageSource source,
+    required DeviceType deviceType,
   }) = _PickImage;
 
   const factory ArticleFormEvent.changeCategory(Category category) =
